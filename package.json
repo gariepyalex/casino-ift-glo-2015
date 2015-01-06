@@ -1,0 +1,24 @@
+{
+  "name": "casino-IFT-GLO-2015",
+  "version": "0.0.0",
+  "description": "Jeu d'IFT-GLO pour le casino du FSG 2015",
+  "main": "app.js",
+  "dependencies": {
+    "cors": "~2.4.1",
+    "express": "~4.8.1",
+    "socket.io": "~1.2.1"
+  },
+  "engine": {
+      "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gariepyalex/casino-ift-glo-2015.git"
+  },
+  "author": "Alexandre Gariepy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gariepyalex/casino-ift-glo-2015/issues"
+  },
+  "homepage": "https://github.com/gariepyalex/casino-ift-glo-2015"
+}
