@@ -9,8 +9,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/css",  express.static(__dirname + '/public/css'));
 app.use("/js", express.static(__dirname + '/public/js'));
 
+var PORT = process.env.PORT || 3000;
+
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.listen(3000);
+app.listen(PORT);
