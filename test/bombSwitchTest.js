@@ -1,12 +1,15 @@
 var BombSwitch = require("../bombSwitch.js");
 var assert = require("assert");
 var sinon = require("sinon");
+var SwitchArrayBuilder = require("../switchArrayBuilder.js");
 
 
 describe("BombSwitch", function() {
     var bombSwitch;
+    var builder;
     beforeEach(function() {
         bombSwitch = new BombSwitch("SWITCH_NAME");
+        builder = new SwitchArrayBuilder();
     });
 
     it("the switch can return its name", function() {
