@@ -7,19 +7,22 @@ var SwitchArrayBuilder = function() {
     var bombCallback;
     var shuffleSwitches = true;
 
-    this.withSwitches = function(n) {
+    this.withNumberOfSwitches = function(n) {
         if(n > 5 || n < 1) {
             throw new Error("Invalid number of switches");
         }
         numberOfSwitches = n;
+        return this;
     };
 
     this.withBombCallback = function(callback) {
         bombCallback = callback;
+        return this;
     }
 
     this.withShuffle = function(shuffle) {
         shuffleSwitches = shuffle;
+        return this;
     };
 
     this.build = function() {

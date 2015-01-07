@@ -12,4 +12,9 @@ describe("SwitchArrayBuilder", function() {
         assert.equal(builder.build().length, 5);
     });
 
+    it("you can specify the number of switches", function() {
+        switchArray = builder.withNumberOfSwitches(3).build();
+        assert.equal(switchArray.length, 3);
+    });
+
 });
