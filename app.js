@@ -15,4 +15,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.listen(PORT);
+io.on("connection", function(socket){
+  console.log("user connected");
+});
+
+httpServer.listen(PORT, function(){
+  console.log("listening on port: " + PORT);
+});

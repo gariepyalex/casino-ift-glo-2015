@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+    var socket = io.connect();
 
     $("#button1").click(function(event){
         $('#button1').prop('disabled', true);
