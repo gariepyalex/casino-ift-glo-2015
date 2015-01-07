@@ -8,6 +8,10 @@
     "express": "~4.8.1",
     "socket.io": "~1.2.1"
   },
+  "devDependencies": {
+    "mocha": "~2.1.0",
+    "sinon": "1.12.x"
+  },
   "engine": {
       "node": "0.10.x"
   },
