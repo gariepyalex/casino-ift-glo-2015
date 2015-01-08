@@ -30,10 +30,6 @@ var Game = function(callback, builder) {
                 return;
             }
         });
-
-        if(!found) {
-            throw new Error("Invalid switch name");
-        }
     };
 
     var switchArrayBuilder = builder || new SwitchArrayBuilder();
