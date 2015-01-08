@@ -4,6 +4,7 @@
     <title>Casino IFT-GLO 2015</title>
     <meta charset="UTF-8">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -11,18 +12,16 @@
   </head>
   <body>
       <div id="mainContainer">
-        <label id="bombText">Bomb!!!</label>
-
-        <div id="buttonList">
-          <button id="button1">1</button>
-          <button id="button2">2</button>
-          <button id="button3">3</button>
-          <button id="button4">4</button>
-          <button id="button5">5</button>
-        </div>
-
+        <label id="bombText">not boom.</label>
+        <div id="buttonList"></div>
         <button id="reset">Reset</button>
       </div>
   </body>
+    <script type="text/template" id="switchTemplate">
+        <%_.each(switches, function(s){%>
+          <button id="<%= s.name %>">S</button>
+        <%});%>
+    </script>
+  
   <script src="js/app.js"></script>
 </html>

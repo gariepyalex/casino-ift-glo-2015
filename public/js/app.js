@@ -1,31 +1,37 @@
 $( document ).ready(function() {
     var socket = io.connect();
+    var template = _.template($("#switchTemplate").html());
 
-    $("#button1").click(function(event){
-        $('#button1').prop('disabled', true);
+    socket.on("game current state", function(state) {
+        render(state.switches);
+        bindClicks();
     });
 
-    $("#button2").click(function(event){
-        $('#button2').prop('disabled', true);
+    socket.on("game press switch ok", function(switchId) {
     });
 
-    $("#button3").click(function(event){
-        $('#button3').prop('disabled', true);
-    });
+    var render = function(switches) {
+        $("#buttonList").html(template({switches: switches}));
+        _.each(switches, function(s) {
+            if(s.activated){
+                $('#' + s.name).prop('disabled', true);
+            }
+        });
+    };
 
-    $("#button4").click(function(event){
-        $('#button4').prop('disabled', true);
-    });
+    var bindClicks = function() {
 
-    $("#button5").click(function(event){
-        $('#button5').prop('disabled', true);
-    });
+        $("#buttonList button").unbind("click");
+        $("#buttonList button").click(function(event){
+            socket.emit("game press switch", event.target.id);
+        });
 
-    $("#reset").click(function(event){
-        $('#button1').prop('disabled', false);
-        $('#button2').prop('disabled', false);
-        $('#button3').prop('disabled', false);
-        $('#button4').prop('disabled', false);
-        $('#button5').prop('disabled', false);
-    });
+
+        $("#reset").unbind("click");
+        $("#reset").click(function(event){
+            socket.emit("game reset");
+        });
+    };
+
+    bindClicks();
 });
