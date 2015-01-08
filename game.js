@@ -1,11 +1,9 @@
 var SwitchArrayBuilder = require("./switchArrayBuilder.js");
 
 var Game = function(callback, builder) {
-    var switchArrayBuilder = builder || new SwitchArrayBuilder();
-    var switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion).build();
 
     this.bombExplosion = function() {
-
+        callback();
     };
 
     this.reset = function() {
@@ -28,6 +26,7 @@ var Game = function(callback, builder) {
             if(s.getName() == name && !s.isActivated()) {
                 found = true;
                 s.press();
+                console.log("press " + s.getName());
                 return;
             }
         });
@@ -36,6 +35,9 @@ var Game = function(callback, builder) {
             throw new Error("Invalid switch name");
         }
     };
+
+    var switchArrayBuilder = builder || new SwitchArrayBuilder();
+    var switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion).build();
 
 };
 

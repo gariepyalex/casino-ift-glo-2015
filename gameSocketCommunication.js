@@ -1,9 +1,16 @@
 var Game = require("./game.js");
 
 module.exports = function(http, io) {
-    var game = new Game();
+    var socket;
+    var explosionCallback = function() {
+        console.log("boom");
+        socket.emit("game explosion boom");
+    };
 
-    this.onConnection = function(socket) {
+    var game = new Game(explosionCallback);
+
+    this.onConnection = function(s) {
+        socket = s;
         console.log("user connected");
         socket.emit("game current state", game.getStateJSON());
 

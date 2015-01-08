@@ -7,7 +7,8 @@ $( document ).ready(function() {
         bindClicks();
     });
 
-    socket.on("game press switch ok", function(switchId) {
+    socket.on("game explosion boom", function() {
+        $("#bombText").text("BOOM!!!!!!");
     });
 
     var render = function(switches) {
