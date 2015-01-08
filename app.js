@@ -23,7 +23,7 @@ io.on("connection", function(socket) {
         socket.emit("game current state", game.getStateJSON());
 
         socket.on("game reset", function() {
-            game.reset();
+            game.newGame();
             io.emit("game current state", game.getStateJSON());
         });
 
