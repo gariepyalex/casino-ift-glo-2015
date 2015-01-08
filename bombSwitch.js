@@ -22,6 +22,13 @@ var BombSwitch = function(name) {
     this.addSubscriber = function(callback) {
         subscribers.push(callback);
     };
+
+    this.toJSON = function() {
+        return {
+            "name": name,
+            "activated": activated
+        };
+    }
 };
 
 module.exports = BombSwitch;

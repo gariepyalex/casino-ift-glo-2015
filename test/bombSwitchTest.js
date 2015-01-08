@@ -1,19 +1,17 @@
 var BombSwitch = require("../bombSwitch.js");
 var assert = require("assert");
 var sinon = require("sinon");
-var SwitchArrayBuilder = require("../switchArrayBuilder.js");
-
 
 describe("BombSwitch", function() {
     var bombSwitch;
-    var builder;
+    var SWITCH_NAME = "A_SWITCH_NAME";
+
     beforeEach(function() {
-        bombSwitch = new BombSwitch("SWITCH_NAME");
-        builder = new SwitchArrayBuilder();
+        bombSwitch = new BombSwitch(SWITCH_NAME);
     });
 
     it("the switch can return its name", function() {
-        assert.equal(bombSwitch.getName(), "SWITCH_NAME");
+        assert.equal(bombSwitch.getName(), SWITCH_NAME);
     });
 
     it("the switch is initially not in activated state", function() {
@@ -44,6 +42,13 @@ describe("BombSwitch", function() {
         
         assert(firstCallbackFunction.called);
         assert(secondCallbackFunction.called);
+    });
+
+    it("can be converted to JSON", function() {
+        var json = bombSwitch.toJSON();
+
+        assert.equal(json["name"], SWITCH_NAME);
+        assert.equal(json["activated"], false);
     });
 });
 
