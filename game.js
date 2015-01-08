@@ -3,11 +3,15 @@ var SwitchArrayBuilder = require("./switchArrayBuilder.js");
 var Game = function(callback, builder) {
 
     this.bombExplosion = function() {
+        currentNumberOfSwitch--;
+        self.reset()
         callback();
     };
 
     this.reset = function() {
-        switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion).build();
+        switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion)
+                                        .withNumberOfSwitches(currentNumberOfSwitch)
+                                        .build();
     };
 
     this.getStateJSON = function() {
@@ -32,8 +36,16 @@ var Game = function(callback, builder) {
         });
     };
 
+    this.newGame = function() {
+        currentNumberOfSwitch = 5;
+        self.reset();
+    }
+
     var switchArrayBuilder = builder || new SwitchArrayBuilder();
-    var switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion).build();
+    var currentNumberOfSwitch = 5;
+    var switchArray;
+    var self = this;
+    self.reset();
 
 };
 
