@@ -5,11 +5,7 @@ $( document ).ready(function() {
     socket.on("game current state", function(state) {
         render(state["SWITCHES"]);
         bindClicks();
-        console.log(state.PLAYER_QUEUE);
-    });
-
-    socket.on("game explosion boom", function() {
-        $("#bombText").text("BOOM!!!!!!");
+        console.log(state);
     });
 
     var render = function(switches) {
@@ -31,6 +27,12 @@ $( document ).ready(function() {
 
         $("#reset").unbind("click");
         $("#reset").click(function(event){
+            socket.emit("game set players", [
+                    {"ID": 1, "NAME": "Gari"},
+                    {"ID": 2, "NAME": "JS"},
+                    {"ID": 3, "NAME": "Dario"},
+                    {"ID": 4, "NAME": "David"}
+            ]);
             socket.emit("game reset");
         });
     };

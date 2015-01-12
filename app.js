@@ -26,24 +26,42 @@ app.get('/', function(req, res) {
 
 
 io.on("connection", function(socket) {
-        console.log("user connected");
-        socket.emit("game current state", game.getStateJSON());
+    console.log("user connected");
+    socket.emit("game current state", game.getStateJSON());
 
-        socket.on("game reset", function() {
-            game.newGame();
-            io.emit("game current state", game.getStateJSON());
-        });
+    socket.on("game reset", function() {
+        game.newGame();
+        io.emit("game current state", game.getStateJSON());
+    });
 
-        socket.on("game press switch", function(id) {
-            game.pressSwitch(id);
-            io.emit("game current state", game.getStateJSON());
-        });
+    socket.on("game press switch", function(id) {
+        game.pressSwitch(id);
+        io.emit("game current state", game.getStateJSON());
+    });
+
+    socket.on("game set players", function(playerArray) {
+        if(isValidPlayerArray(playerArray)) {
+            game.setPlayerQueue(new PlayerQueue(playerArray));
+            console.log("NEW PLAYERS ADDED");
+        } else {
+            console.error("INVALID PLAYER ARRAY FORMAT");
+        }
+    });
 });
 
-function explosionCallback() {
-    console.log("boom");
-    io.emit("game explosion boom");
+var isValidPlayerArray = function(playerArray) {
+    var valid = true;
+    if(playerArray.length !== 4) {
+        valid = false;
+    }
+    playerArray.forEach(function(player) {
+        if(!player["ID"] || !player["NAME"]){
+            valid = false;
+        }
+    });
+    return valid;
 };
+
 
 httpServer.listen(PORT, function(){
   console.log("listening on port: " + PORT);

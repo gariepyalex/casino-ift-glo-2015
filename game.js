@@ -30,28 +30,28 @@ module.exports = function(builder) {
                 if(s.getName() == name && !s.isActivated()) {
                     numberOfPressedSwitches++;
                     turn++;
-                    eventLog.logPressEvent(turn, playerQueue.getCurrentPlayer["ID"], s.getName());
+                    eventLog.logPressEvent(turn, playerQueue.getCurrentPlayer()["ID"], s.getName());
                     s.press();
                     if(s.isBomb()) {
                         self.bombExplosion();
                     }else {
+                    if(checkIfOnlyOneSwitchRemaining()) { //That switch will cause the bomb to explode
+                        self.buildNewSwitches();
+                    }
                         playerQueue.nextPlayer();
                     }
                 }
             });
-            if(checkIfOnlyOneSwitchRemaining()) { //That switch will cause the bomb to explode
-                this.buildNewSwitches();
-            }
         }
     };
 
     this.bombExplosion = function() {
-        eventLog.logExplosionEvent(turn, playerQueue.getCurrentPlayer["ID"]);
+        eventLog.logExplosionEvent(turn, playerQueue.getCurrentPlayer()["ID"]);
         playerQueue.killCurrentPlayer();
         currentNumberOfSwitch--;
         if(playerQueue.getNumberOfAlivePlayers() == 1) {
             gameOver = true;
-            eventLog.logWinEvent(turn, playerQueue.getCurrentPlayer["ID"]);
+            eventLog.logWinEvent(turn, playerQueue.getCurrentPlayer()["ID"]);
         } else {
             self.buildNewSwitches()
         }
