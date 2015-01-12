@@ -24,6 +24,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/mainUI.html');
 });
 
+app.get('/switch', function(req, res) {
+    res.sendFile(__dirname + '/public/switchUI.html');
+});
+
 
 io.on("connection", function(socket) {
     console.log("user connected");
