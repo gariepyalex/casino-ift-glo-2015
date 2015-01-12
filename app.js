@@ -4,8 +4,15 @@ var app = express();
 var http = require('http');
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer);
+var PlayerQueue = require("./playerQueue.js");
 var Game = require("./game.js");
-var game = new Game(explosionCallback);
+var game = new Game();
+game.setPlayerQueue(new PlayerQueue([
+            {ID: "1", NAME: "TOTO"},
+            {ID: "2", NAME: "FOO"},
+            {ID: "3", NAME: "BAR"},
+            {ID: "4", NAME: "REDDIT"},
+        ]));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/css",  express.static(__dirname + '/public/css'));

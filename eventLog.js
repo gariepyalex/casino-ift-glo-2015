@@ -43,6 +43,11 @@ module.exports = function() {
         });
         console.log(events[turn]);
     };
+
+    this.getEventsOfTurn = function(turn) {
+        return events[turn] || [];
+    };
+
     this.clear = function() {
         events = [];
     };

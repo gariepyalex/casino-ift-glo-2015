@@ -15,11 +15,6 @@ var SwitchArrayBuilder = function() {
         return this;
     };
 
-    this.withBombCallback = function(callback) {
-        bombCallback = callback;
-        return this;
-    }
-
     this.withShuffle = function(shuffle) {
         shuffleSwitches = shuffle;
         return this;
@@ -28,14 +23,12 @@ var SwitchArrayBuilder = function() {
     this.build = function() {
         var switches = [];
 
-        for(var i = 0; i < numberOfSwitches; i++) {
-            var newSwitch = new Switch(randomstring.generate());
+        var newSwitch = new Switch(randomstring.generate(), true);
+        switches.push(newSwitch);
+        for(var i = 1; i < numberOfSwitches; i++) {
+            var newSwitch = new Switch(randomstring.generate(), false);
             switches.push(newSwitch);
         };
-
-        if(bombCallback) {
-            switches[0].addSubscriber(bombCallback);
-        }
 
         if(shuffleSwitches) {
             shuffle.knuthShuffle(switches);

@@ -2,6 +2,7 @@ var assert = require("assert");
 var sinon = require("sinon");
 var Game = require("../game.js");
 var Switch = require("../bombSwitch.js");
+var PlayerQueue = require("../playerQueue.js");
 
 var SwitchArrayBuilderStub = function() {
     this.withNumberOfSwitches = sinon.stub().returns(this);
@@ -18,14 +19,23 @@ var buildFakeSwitches = function(n) {
     return switches;
 };
 
+var buildDummyPlayerQueue = function() {
+    return new PlayerQueue([
+            {ID: "1", NAME: "TOTO"},
+            {ID: "2", NAME: "FOO"},
+            {ID: "3", NAME: "BAR"},
+            {ID: "4", NAME: "REDDIT"},
+        ]);
+};
+
 describe("Game", function() {
     var game;
     var switchArrayBuilderStub;
-    var bombExplosionCallback;
     beforeEach(function() {
         switchArrayBuilderStub = new SwitchArrayBuilderStub();
-        bombExplosionCallback = sinon.spy();
-        game = new Game(bombExplosionCallback, switchArrayBuilderStub);
+        game = new Game(switchArrayBuilderStub);
+        game.setPlayerQueue(buildDummyPlayerQueue());
+        game.newGame();
     });
 
     it("at the beginning, the game uses the switch builder to create initial state", function() {
@@ -42,17 +52,17 @@ describe("Game", function() {
 
     it("can get the state in JSON", function() {
         var state = game.getStateJSON();
-        assert.equal(state.switches.length, 5);
-        assert.equal(state.switches[0].name, "1");
-        assert.equal(state.switches[0].activated, false);
-        assert.equal(state.switches[1].name, "2");
-        assert.equal(state.switches[1].activated, false);
-        assert.equal(state.switches[2].name, "3");
-        assert.equal(state.switches[2].activated, false);
-        assert.equal(state.switches[3].name, "4");
-        assert.equal(state.switches[3].activated, false);
-        assert.equal(state.switches[4].name, "5");
-        assert.equal(state.switches[4].activated, false);
+        assert.equal(state.SWITCHES.length, 5);
+        assert.equal(state.SWITCHES[0].name, "1");
+        assert.equal(state.SWITCHES[0].activated, false);
+        assert.equal(state.SWITCHES[1].name, "2");
+        assert.equal(state.SWITCHES[1].activated, false);
+        assert.equal(state.SWITCHES[2].name, "3");
+        assert.equal(state.SWITCHES[2].activated, false);
+        assert.equal(state.SWITCHES[3].name, "4");
+        assert.equal(state.SWITCHES[3].activated, false);
+        assert.equal(state.SWITCHES[4].name, "5");
+        assert.equal(state.SWITCHES[4].activated, false);
     });
 });
 

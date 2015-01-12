@@ -1,36 +1,27 @@
 var SwitchArrayBuilder = require("./switchArrayBuilder.js");
 var EventLog = require("./eventLog.js");
 
-module.exports = function(callback, builder) {
+module.exports = function(builder) {
 
-    this.bombExplosion = function() {
-        eventLog.logExplosionEvent(turn, 0);
-        currentNumberOfSwitch--;
-        if(currentNumberOfSwitch === 1) {
-            gameOver = true;
-            eventLog.logWinEvent(turn, 0);
-        } else {
-            self.buildNewSwitches()
-            callback();
-        }
+    this.newGame = function() {
+        gameStarted = true;
+        eventLog.clear();
+        playerQueue.reset();
+        currentNumberOfSwitch = 5;
+        turn = 0;
+        gameOver = false;
+        self.buildNewSwitches();
     };
+
+    this.setPlayerQueue = function(queue) {
+        playerQueue = queue;
+    }
 
     this.buildNewSwitches = function() {
         eventLog.logNewSwitchesEvent(turn);
-        switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion)
-                                        .withNumberOfSwitches(currentNumberOfSwitch)
+        switchArray = switchArrayBuilder.withNumberOfSwitches(currentNumberOfSwitch)
                                         .build();
         numberOfPressedSwitches = 0;
-    };
-
-    this.getStateJSON = function() {
-        var switches = [];
-        for(var i = 0; i < switchArray.length; i++) {
-            switches.push(switchArray[i].toJSON());
-        }
-        return {
-            "switches": switches
-        }
     };
 
     this.pressSwitch = function(name) {
@@ -39,8 +30,13 @@ module.exports = function(callback, builder) {
                 if(s.getName() == name && !s.isActivated()) {
                     numberOfPressedSwitches++;
                     turn++;
-                    eventLog.logPressEvent(turn, 0, s.getName());
+                    eventLog.logPressEvent(turn, playerQueue.getCurrentPlayer["ID"], s.getName());
                     s.press();
+                    if(s.isBomb()) {
+                        self.bombExplosion();
+                    }else {
+                        playerQueue.nextPlayer();
+                    }
                 }
             });
             if(checkIfOnlyOneSwitchRemaining()) { //That switch will cause the bomb to explode
@@ -49,26 +45,47 @@ module.exports = function(callback, builder) {
         }
     };
 
-    var checkIfOnlyOneSwitchRemaining = function() {
-        return numberOfPressedSwitches + 1 === currentNumberOfSwitch;
+    this.bombExplosion = function() {
+        eventLog.logExplosionEvent(turn, playerQueue.getCurrentPlayer["ID"]);
+        playerQueue.killCurrentPlayer();
+        currentNumberOfSwitch--;
+        if(playerQueue.getNumberOfAlivePlayers() == 1) {
+            gameOver = true;
+            eventLog.logWinEvent(turn, playerQueue.getCurrentPlayer["ID"]);
+        } else {
+            self.buildNewSwitches()
+        }
     };
 
-    this.newGame = function() {
-        eventLog.clear();
-        currentNumberOfSwitch = 5;
-        turn = 0;
-        gameOver = false;
-        self.buildNewSwitches();
+    this.getStateJSON = function() {
+        if(gameStarted){
+            var switches = [];
+            for(var i = 0; i < switchArray.length; i++) {
+                switches.push(switchArray[i].toJSON());
+            }
+            return {
+                "SWITCHES": switches,
+                "EVENTS": eventLog.getEventsOfTurn(turn),
+                "CURRENT_PLAYER": playerQueue.getCurrentPlayer(),
+                "PLAYER_QUEUE": playerQueue.getPlayerArray()
+            };
+        } else {
+            return {};
+        }
+    };
+
+    var checkIfOnlyOneSwitchRemaining = function() {
+        return numberOfPressedSwitches + 1 === currentNumberOfSwitch;
     };
 
     var switchArrayBuilder = builder || new SwitchArrayBuilder();
     var currentNumberOfSwitch;
     var turn;
     var numberOfPressedSwitches;
+    var gameStarted = false
     var gameOver;
     var eventLog = new EventLog();
     var switchArray;
+    var playerQueue;
     var self = this;
-    self.newGame();
-
 };

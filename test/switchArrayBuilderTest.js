@@ -17,18 +17,19 @@ describe("SwitchArrayBuilder", function() {
         assert.equal(switchArray.length, 3);
     });
 
-    it("the callback is called only when pressing a single switch", function() {
-        var callback = sinon.spy();
-        var switchArray = builder.withNumberOfSwitches(4).withBombCallback(callback).build();
+    it("only one switch is the bomb", function() {
+        var switchArray = builder.withNumberOfSwitches(5).build();
 
-        switchArray[0].press();
-        switchArray[1].press();
-        switchArray[2].press();
-        switchArray[3].press();
+        numberOfBomb = 0;
+        switchArray.forEach(function(s) {
+            if(s.isBomb()) {
+                numberOfBomb += 1;
+            }
+        });
 
-        assert(callback.calledOnce);
+        assert.equal(numberOfBomb, 1);
+
     });
-
 });
 
 

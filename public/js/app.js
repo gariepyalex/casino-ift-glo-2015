@@ -3,8 +3,9 @@ $( document ).ready(function() {
     var template = _.template($("#switchTemplate").html());
 
     socket.on("game current state", function(state) {
-        render(state.switches);
+        render(state["SWITCHES"]);
         bindClicks();
+        console.log(state.PLAYER_QUEUE);
     });
 
     socket.on("game explosion boom", function() {

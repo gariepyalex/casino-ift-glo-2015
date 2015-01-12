@@ -23,27 +23,6 @@ describe("BombSwitch", function() {
         assert.equal(bombSwitch.isActivated(), true);
     });
 
-    it("when pressed, the switch signals a subscribed callback function", function() {
-        var callbackFunction = sinon.spy();
-        bombSwitch.addSubscriber(callbackFunction);
-        
-        bombSwitch.press();
-        
-        assert(callbackFunction.called);
-    });
-
-    it("when pressed, the switch signals all the subscribed callback functions", function() {
-        var firstCallbackFunction = sinon.spy();
-        var secondCallbackFunction = sinon.spy();
-        bombSwitch.addSubscriber(firstCallbackFunction);
-        bombSwitch.addSubscriber(secondCallbackFunction);
-        
-        bombSwitch.press();
-        
-        assert(firstCallbackFunction.called);
-        assert(secondCallbackFunction.called);
-    });
-
     it("can be converted to JSON", function() {
         var json = bombSwitch.toJSON();
 

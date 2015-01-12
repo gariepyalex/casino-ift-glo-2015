@@ -1,8 +1,6 @@
-var BombSwitch = function(name) {
+var BombSwitch = function(name, isBomb) {
 
     var activated = false;
-    var subscribers = [];
-
 
     this.getName = function() {
         return name;
@@ -14,13 +12,10 @@ var BombSwitch = function(name) {
 
     this.press = function() {
         activated = true;
-        subscribers.forEach(function(callback) {
-            callback();
-        });
     };
 
-    this.addSubscriber = function(callback) {
-        subscribers.push(callback);
+    this.isBomb = function() {
+        return isBomb;
     };
 
     this.toJSON = function() {
