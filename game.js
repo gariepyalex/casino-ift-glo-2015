@@ -1,17 +1,26 @@
 var SwitchArrayBuilder = require("./switchArrayBuilder.js");
+var EventLog = require("./eventLog.js");
 
-var Game = function(callback, builder) {
+module.exports = function(callback, builder) {
 
     this.bombExplosion = function() {
+        eventLog.logExplosionEvent(turn, 0);
         currentNumberOfSwitch--;
-        self.reset()
-        callback();
+        if(currentNumberOfSwitch === 1) {
+            gameOver = true;
+            eventLog.logWinEvent(turn, 0);
+        } else {
+            self.buildNewSwitches()
+            callback();
+        }
     };
 
-    this.reset = function() {
+    this.buildNewSwitches = function() {
+        eventLog.logNewSwitchesEvent(turn);
         switchArray = switchArrayBuilder.withBombCallback(this.bombExplosion)
                                         .withNumberOfSwitches(currentNumberOfSwitch)
                                         .build();
+        numberOfPressedSwitches = 0;
     };
 
     this.getStateJSON = function() {
@@ -22,31 +31,44 @@ var Game = function(callback, builder) {
         return {
             "switches": switches
         }
-    }
+    };
 
     this.pressSwitch = function(name) {
-        var found = false;
-        switchArray.forEach(function(s) {
-            if(s.getName() == name && !s.isActivated()) {
-                found = true;
-                s.press();
-                console.log("press " + s.getName());
-                return;
+        if(!gameOver) {
+            switchArray.forEach(function(s) {
+                if(s.getName() == name && !s.isActivated()) {
+                    numberOfPressedSwitches++;
+                    turn++;
+                    eventLog.logPressEvent(turn, 0, s.getName());
+                    s.press();
+                }
+            });
+            if(checkIfOnlyOneSwitchRemaining()) { //That switch will cause the bomb to explode
+                this.buildNewSwitches();
             }
-        });
+        }
+    };
+
+    var checkIfOnlyOneSwitchRemaining = function() {
+        return numberOfPressedSwitches + 1 === currentNumberOfSwitch;
     };
 
     this.newGame = function() {
+        eventLog.clear();
         currentNumberOfSwitch = 5;
-        self.reset();
-    }
+        turn = 0;
+        gameOver = false;
+        self.buildNewSwitches();
+    };
 
     var switchArrayBuilder = builder || new SwitchArrayBuilder();
-    var currentNumberOfSwitch = 5;
+    var currentNumberOfSwitch;
+    var turn;
+    var numberOfPressedSwitches;
+    var gameOver;
+    var eventLog = new EventLog();
     var switchArray;
     var self = this;
-    self.reset();
+    self.newGame();
 
 };
-
-module.exports = Game;
