@@ -21,7 +21,7 @@ app.use("/js", express.static(__dirname + '/public/js'));
 var PORT = process.env.PORT || 3000;
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + '/public/mainUI.html');
 });
 
 
