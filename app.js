@@ -17,6 +17,7 @@ game.setPlayerQueue(new PlayerQueue([
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/css",  express.static(__dirname + '/public/css'));
 app.use("/js", express.static(__dirname + '/public/js'));
+app.use("/img", express.static(__dirname + '/public/img'));
 
 var PORT = process.env.PORT || 3000;
 
