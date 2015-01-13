@@ -3,15 +3,18 @@
 <head>
     <title>Casino IFT-GLO 2015</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/mainUI.css">
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
     <script src="js/mainUI.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/mainUI.css">
+    <script src="js/mainUICanvas.js"></script>
 </head>
 <body>
-<div id="mainContainer">
-    <label id="bombText">not boom.</label>
+<canvas id="stageCanvas" width="800px" height="600px"></canvas>
+<div id="buttonContainer">
     <div id="buttonList"></div>
     <button id="reset">Reset</button>
 </div>

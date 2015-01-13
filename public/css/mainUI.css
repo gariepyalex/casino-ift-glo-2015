@@ -1,4 +1,7 @@
-#mainContainer{
+html, body {
+    margin: 0;
+}
+#buttonContainer{
     width: 200px;
     display: block;
     margin-left: auto;
@@ -11,4 +14,11 @@
 
 #buttonList button {
     margin: 5px;
+}
+
+#stageCanvas {
+    width: 60vw;
+    height: calc(60vw * 0.75);
+    display: block;
+    margin: 0 auto;
 }
