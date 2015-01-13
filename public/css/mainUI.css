@@ -21,4 +21,5 @@ html, body {
     height: calc(60vw * 0.75);
     display: block;
     margin: 0 auto;
+    image-rendering: pixelated;
 }
