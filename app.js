@@ -22,6 +22,10 @@ app.use("/img", express.static(__dirname + '/public/img'));
 var PORT = process.env.PORT || 3000;
 
 app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/public/newGameUI.html');
+});
+
+app.get('/game', function(req, res) {
   res.sendFile(__dirname + '/public/mainUI.html');
 });
 
