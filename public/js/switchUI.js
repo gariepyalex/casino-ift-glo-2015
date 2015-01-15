@@ -5,6 +5,7 @@ $( document ).ready(function() {
     socket.on("game current state", function (state) {
         render(state["SWITCHES"]);
         updateCurrentPlayer(state);
+        updateSwitches(state);
         if (gameIsOver(state)){
             $("#playerMessage").text("You've won!")
         }
@@ -15,11 +16,11 @@ $( document ).ready(function() {
         $("#switchContainer").html(template({switches: switches}));
         _.each(switches, function (s) {
             if (s.activated) {
-                $('#' + s.name).prop('disabled', true);
+                var current_switch = $('#' + s.name);
+                current_switch.prop('disabled', true);
             }
         });
     };
-
 
     var bindClicks = function () {
         var any_switch = $("#switchContainer").children(".switch");
@@ -37,6 +38,17 @@ $( document ).ready(function() {
 
     var gameIsOver = function(state){
       return state.PLAYER_QUEUE.length == 1;
+    };
+
+    var updateSwitches = function(state){
+        var switches = state.SWITCHES;
+        _.each(switches, function (s) {
+            if (s.activated){
+                var current_switch_img = $(".switch[data-id=" + s.name + "]").children("img");
+                current_switch_img.removeClass();
+                current_switch_img.addClass("inactiveSwitch")
+            }
+        });
     };
 
     bindClicks();
