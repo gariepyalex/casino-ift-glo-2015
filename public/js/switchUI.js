@@ -4,6 +4,10 @@ $( document ).ready(function() {
 
     socket.on("game current state", function (state) {
         render(state["SWITCHES"]);
+        updateCurrentPlayer(state);
+        if (gameIsOver(state)){
+            $("#playerMessage").text("You've won!")
+        }
         bindClicks();
     });
 
@@ -18,10 +22,21 @@ $( document ).ready(function() {
 
 
     var bindClicks = function () {
-        $("#switchContainer .switch").unbind("click");
-        $("#switchContainer .switch").click(function (event) {
+        var any_switch = $("#switchContainer").children(".switch");
+        any_switch.unbind("click");
+        any_switch.click(function (event) {
             socket.emit("game press switch", event.target.getAttribute("data-id"));
         });
+    };
+
+    var updateCurrentPlayer = function(state) {
+        var currentPlayer = $("#currentPlayer");
+        var playerName = state.CURRENT_PLAYER.NAME;
+        currentPlayer.text(playerName)
+    };
+
+    var gameIsOver = function(state){
+      return state.PLAYER_QUEUE.length == 1;
     };
 
     bindClicks();
