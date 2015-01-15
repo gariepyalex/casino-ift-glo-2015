@@ -4,7 +4,11 @@ casino.renderer = function() {
 
     var stage, loader;
     var switchSprites = [];
-    var renderedReady = false;
+    var switchReady = false;
+
+    var eventQueue = [];
+    var currentRender;
+    var currentSwitches;
 
     var initialize = function() {
         stage = new createjs.Stage("stageCanvas");
@@ -86,42 +90,77 @@ casino.renderer = function() {
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener("tick", tick);
-
-        renderedReady = true;
     };
 
     var tick = function(event) {
+        if(switchReady) {
+            if(!currentRender){
+                if(eventQueue.length != 0) {
+                    addEventToRender();
+                }
+            } else {
+                updateAnimation();
+            }
+        } else {
+            self.renderSwitches(currentSwitches);
+        }
         stage.update(event);
     };
 
-    this.renderSwitches = function(switchArray) {
-        if(renderedReady) {
-            switchSprites.forEach(function(sprite) {
-                sprite.visible = false;
-            });
-            switchArray.forEach(function(s,  index) {
-                switchSprites[index].visible = true;
-                switchSprites[index]["SWITCH_ID"] = s.name;
-                /*
-                 if(s.activated) {
-                 switchSprites[index].gotoAndStop(5);
-                 }else {
-                 switchSprites[index].gotoAndStop(0);
-                 }*/
-                switchSprites[index].addEventListener("click", handleSwitchClick);
-            });
+    var updateAnimation = function () {
+        if(currentRender.isDone()){
+            currentRender = null;
+        }else {
+            currentRender.update();
         }
     };
 
-    this.playPressAnimation = function(switchId) {
+    var addEventToRender = function() {
+        var event = eventQueue.shift();
+        if(event.NAME === "NEW_SWITCHES") {
+            self.renderSwitches(event.SWITCHES);
+        } else if(event.NAME === "PRESS"){
+            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID));
+            currentRender.play();
+        }
+    };
+
+    this.addToRenderQueue = function(eventArray) {
+        eventQueue = eventQueue.concat(eventArray);
+    };
+
+    this.setSwitchState = function(switches) {
+        if(!switchReady) {
+            currentSwitches = switches;
+        }
+    };
+
+    this.renderSwitches = function(switchArray) {
+        console.log("rs");
         switchSprites.forEach(function(sprite) {
-            if(sprite["SWITCH_ID"] == switchId) {
-                sprite.play();
-                sprite.on("animationend", function(){
-                    sprite.gotoAndStop(5);
-                });
+            sprite.visible = false;
+        });
+        switchArray.forEach(function(s,  index) {
+            switchSprites[index].visible = true;
+            switchSprites[index]["SWITCH_ID"] = s.name;
+            switchSprites[index].addEventListener("click", handleSwitchClick);
+            if(s.activated) {
+                switchSprites[index].gotoAndStop(5);
+            }else {
+                switchSprites[index].gotoAndStop(0);
             }
         });
+        switchReady = true;
+    };
+
+    var findSwitchSprite = function(switchId) {
+        var sprite;
+        switchSprites.forEach(function(s) {
+            if(s["SWITCH_ID"] == switchId) {
+                sprite = s;
+            }
+        });
+        return sprite;
     };
 
     var handleSwitchClick = function(event) {
@@ -129,5 +168,5 @@ casino.renderer = function() {
     };
 
     initialize();
-
+    var self = this;
 };
