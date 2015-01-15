@@ -9,6 +9,9 @@ $( document ).ready(function() {
         console.log(state);
         if(state["SWITCHES"]){
             render(state["SWITCHES"]);
+            renderer.setSwitchState(state["SWITCHES"]);
+        } if(state["EVENTS"]) {
+            renderer.addToRenderQueue(state["EVENTS"]);
         }
         bindClicks();
     });
@@ -20,7 +23,6 @@ $( document ).ready(function() {
                 $('#' + s.name).prop('disabled', true);
             }
         });
-        renderer.renderSwitches(switches);
     };
 
     var bindClicks = function() {
@@ -28,7 +30,6 @@ $( document ).ready(function() {
         $("#buttonList button").unbind("click");
         $("#buttonList button").click(function(event){
             socket.emit("game press switch", event.target.id);
-            renderer.playPressAnimation(event.target.id);
         });
 
 
