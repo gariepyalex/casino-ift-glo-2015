@@ -1,11 +1,15 @@
+var casino = casino || {};
+
 $( document ).ready(function() {
     var socket = io.connect();
     var template = _.template($("#switchTemplate").html());
 
     socket.on("game current state", function(state) {
-        render(state["SWITCHES"]);
-        bindClicks();
         console.log(state);
+        if(state["SWITCHES"]){
+            render(state["SWITCHES"]);
+        }
+        bindClicks();
     });
 
     var render = function(switches) {
@@ -15,6 +19,7 @@ $( document ).ready(function() {
                 $('#' + s.name).prop('disabled', true);
             }
         });
+        casino.renderer.renderSwitches(switches);
     };
 
     var bindClicks = function() {
@@ -22,6 +27,7 @@ $( document ).ready(function() {
         $("#buttonList button").unbind("click");
         $("#buttonList button").click(function(event){
             socket.emit("game press switch", event.target.id);
+            casino.renderer.playPressAnimation(event.target.id);
         });
 
 

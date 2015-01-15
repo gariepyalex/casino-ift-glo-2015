@@ -22,13 +22,14 @@ module.exports = function() {
         });
     };
 
-    this.logNewSwitchesEvent = function(turn) {
+    this.logNewSwitchesEvent = function(turn, switches) {
         if(!events[turn]) {
             events[turn] = [];
         }
         events[turn].push({
             TURN: turn,
             NAME: "NEW_SWITCHES",
+            SWITCHES: switches
         });
     };
 

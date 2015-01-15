@@ -15,13 +15,12 @@ module.exports = function(builder) {
 
     this.setPlayerQueue = function(queue) {
         playerQueue = queue;
-    }
+    };
 
     this.buildNewSwitches = function() {
-        eventLog.logNewSwitchesEvent(turn);
-        switchArray = switchArrayBuilder.withNumberOfSwitches(currentNumberOfSwitch)
-                                        .build();
+        switchArray = switchArrayBuilder.withNumberOfSwitches(currentNumberOfSwitch).build();
         numberOfPressedSwitches = 0;
+        eventLog.logNewSwitchesEvent(turn, switchesToJSON());
     };
 
     this.pressSwitch = function(name) {
@@ -59,12 +58,8 @@ module.exports = function(builder) {
 
     this.getStateJSON = function() {
         if(gameStarted){
-            var switches = [];
-            for(var i = 0; i < switchArray.length; i++) {
-                switches.push(switchArray[i].toJSON());
-            }
             return {
-                "SWITCHES": switches,
+                "SWITCHES": switchesToJSON(),
                 "EVENTS": eventLog.getEventsOfTurn(turn),
                 "CURRENT_PLAYER": playerQueue.getCurrentPlayer(),
                 "PLAYER_QUEUE": playerQueue.getPlayerArray()
@@ -78,11 +73,19 @@ module.exports = function(builder) {
         return numberOfPressedSwitches + 1 === currentNumberOfSwitch;
     };
 
+    var switchesToJSON = function() {
+        var switches = [];
+        for(var i = 0; i < switchArray.length; i++) {
+            switches.push(switchArray[i].toJSON());
+        }
+        return switches;
+    };
+
     var switchArrayBuilder = builder || new SwitchArrayBuilder();
     var currentNumberOfSwitch;
     var turn;
     var numberOfPressedSwitches;
-    var gameStarted = false
+    var gameStarted = false;
     var gameOver;
     var eventLog = new EventLog();
     var switchArray;
