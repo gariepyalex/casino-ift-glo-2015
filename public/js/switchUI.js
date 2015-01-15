@@ -42,12 +42,36 @@ $( document ).ready(function() {
 
     var updateSwitches = function(state){
         var switches = state.SWITCHES;
+        var i = 0;
         _.each(switches, function (s) {
+            var current_switch_img = $(".switch[data-id=" + s.name + "]").children("img");
+            current_switch_img.removeClass();
+
+            switch (i % switches.length){
+                case 0:
+                    current_switch_img.addClass("redSwitch");
+                    break;
+                case 1:
+                    current_switch_img.addClass("yellowSwitch");
+                    break;
+                case 2:
+                    current_switch_img.addClass("blueSwitch");
+                    break;
+                case 3:
+                    current_switch_img.addClass("greenSwitch");
+                    break;
+                case 4:
+                    current_switch_img.addClass("purpleSwitch");
+                    break;
+                default:
+                    current_switch_img.addClass("inactiveSwitch");
+            }
+
             if (s.activated){
-                var current_switch_img = $(".switch[data-id=" + s.name + "]").children("img");
-                current_switch_img.removeClass();
                 current_switch_img.addClass("inactiveSwitch")
             }
+
+            i = i + 1
         });
     };
 
