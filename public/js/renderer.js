@@ -4,6 +4,7 @@ casino.renderer = function() {
 
     var stage, loader;
     var switchSprites = [];
+    var character;
     var switchReady = false;
 
     var eventQueue = [];
@@ -20,7 +21,8 @@ casino.renderer = function() {
             {src: "../img/detonator/yellow_detonator_sprite.png", id: "yellow_detonator"},
             {src: "../img/detonator/blue_detonator_sprite.png", id: "blue_detonator"},
             {src: "../img/detonator/green_detonator_sprite.png", id: "green_detonator"},
-            {src: "../img/detonator/purple_detonator_sprite.png", id: "purple_detonator"}
+            {src: "../img/detonator/purple_detonator_sprite.png", id: "purple_detonator"},
+            {src: "../img/patrick.png", id: "patrick"}
         ];
 
         loader = new createjs.LoadQueue(false);
@@ -69,6 +71,7 @@ casino.renderer = function() {
                 "detonation": [0, 5, "detonation"]
             }
         });
+        character = new createjs.Bitmap(loader.getResult("patrick"));
 
         var redSwitch = new createjs.Sprite(spriteSheetRed);
         var yellowSwitch = new createjs.Sprite(spriteSheetYellow);
@@ -81,8 +84,9 @@ casino.renderer = function() {
         blueSwitch.x = 390; blueSwitch.y = 450;
         greenSwitch.x = 520; greenSwitch.y = 450;
         purpleSwitch.x = 650; purpleSwitch.y = 450;
+        character.x = -150; character.y = 350;
 
-        stage.addChild(redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
+        stage.addChild(character, redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
 
         switchSprites.push(redSwitch);
         switchSprites.push(yellowSwitch);
@@ -101,7 +105,7 @@ casino.renderer = function() {
                     addEventToRender();
                 }
             } else {
-                updateAnimation();
+                updateAnimation(event);
             }
         } else {
             self.renderSwitches(currentSwitches);
@@ -109,11 +113,11 @@ casino.renderer = function() {
         stage.update(event);
     };
 
-    var updateAnimation = function () {
+    var updateAnimation = function (event) {
         if(currentRender.isDone()){
             currentRender = null;
         }else {
-            currentRender.update();
+            currentRender.update(event);
         }
     };
 
@@ -122,7 +126,7 @@ casino.renderer = function() {
         if(event.NAME === "NEW_SWITCHES") {
             self.renderSwitches(event.SWITCHES);
         } else if(event.NAME === "PRESS"){
-            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID));
+            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID), character);
             currentRender.play();
         }
     };
@@ -138,7 +142,6 @@ casino.renderer = function() {
     };
 
     this.renderSwitches = function(switchArray) {
-        console.log("rs");
         switchSprites.forEach(function(sprite) {
             sprite.visible = false;
         });

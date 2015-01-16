@@ -1,19 +1,45 @@
 var casino = casino || {};
 
-casino.switchPressAnimation = function(switchSprite) {
+casino.switchPressAnimation = function(switchSprite, characterSprite) {
 
     var done = false;
+    var phase;
+
+    characterVelocity = 200; //pixel per sec.
 
     this.play = function() {
-        switchSprite.gotoAndPlay(0);
-        switchSprite.on("animationend", function() {
-            done = true;
-            switchSprite.gotoAndStop(5);
-        });
+        phase = 0;
+        characterSprite.x = -100;
+        /*
+         */
     };
 
-    this.update = function() {
+    this.update = function(tickEvent) {
+        if(phase == 0) {
+            updateMoveToSwitch(tickEvent.delta / 1000);
+        }else if(phase == 1){
+        }else {
+            done = true;
+        }
+    };
 
+    var updateMoveToSwitch = function(deltaS) {
+        console.log(characterSprite.x);
+        console.log(switchSprite.x);
+        characterSprite.x += characterVelocity * deltaS;
+        if(characterSprite.x >= switchSprite.x) {
+            characterSprite.x = switchSprite.x;
+            phase++;
+            playSwitchAnimation();
+        }
+    };
+
+    var playSwitchAnimation = function() {
+        switchSprite.gotoAndPlay(0);
+        switchSprite.on("animationend", function() {
+            switchSprite.gotoAndStop(5);
+            phase++;
+        });
     };
 
     this.isDone = function() {
