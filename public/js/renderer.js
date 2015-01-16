@@ -14,6 +14,8 @@ casino.renderer = function() {
 
     var pressCallbacks = [];
 
+    var switchMinX = 130, switchMaxX = 650;
+
     var initialize = function() {
         stage = new createjs.Stage("stageCanvas");
 
@@ -164,11 +166,14 @@ casino.renderer = function() {
     };
 
     this.renderSwitches = function(switchArray) {
-        switchSprites.forEach(function(sprite) {
+        switchSprites.forEach(function(sprite, index) {
             sprite.visible = false;
+
         });
+        var step = (switchMaxX - switchMinX) / (switchArray.length - 1);
         switchArray.forEach(function(s,  index) {
             switchSprites[index].visible = true;
+            switchSprites[index].x = switchMinX + step * index;
             switchSprites[index]["SWITCH_ID"] = s.name;
             switchSprites[index].addEventListener("click", handleSwitchClick);
             if(s.activated) {
