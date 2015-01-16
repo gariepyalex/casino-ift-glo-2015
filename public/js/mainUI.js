@@ -19,13 +19,7 @@ $( document ).ready(function() {
 
     var bindClicks = function() {
         $("#reset").unbind("click");
-        $("#reset").click(function(event){
-            socket.emit("game set players", [
-                    {"ID": 1, "NAME": "Gari"},
-                    {"ID": 2, "NAME": "JS"},
-                    {"ID": 3, "NAME": "Dario"},
-                    {"ID": 4, "NAME": "David"}
-            ]);
+        $("#reset").click(function(){
             socket.emit("game reset");
         });
     };
