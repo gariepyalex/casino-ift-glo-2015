@@ -27,5 +27,6 @@ module.exports = function(playerArray) {
     this.reset = function() {
         shuffle.knuthShuffle(playerArray);
         playerArray = playerArray.concat(killedPlayers);
+        killedPlayers = [];
     }
 };
