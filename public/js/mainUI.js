@@ -13,7 +13,7 @@ $( document ).ready(function() {
         if(state["SWITCHES"]){
             renderer.setSwitchState(state["SWITCHES"]);
         } if(state["EVENTS"]) {
-            renderer.addToRenderQueue(state["EVENTS"]);
+            renderer.setEventRenderQueue(state["EVENTS"]);
         }
     });
 

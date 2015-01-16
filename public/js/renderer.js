@@ -125,14 +125,18 @@ casino.renderer = function() {
         var event = eventQueue.shift();
         if(event.NAME === "NEW_SWITCHES") {
             self.renderSwitches(event.SWITCHES);
+            currentRender = new casino.newSwitchesAnimation(switchSprites);
+            currentRender.play();
         } else if(event.NAME === "PRESS"){
             currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID), character);
             currentRender.play();
         }
     };
 
-    this.addToRenderQueue = function(eventArray) {
-        eventQueue = eventQueue.concat(eventArray);
+    this.setEventRenderQueue = function(eventArray) {
+        eventArray.forEach(function(e) {
+            eventQueue.push(e);
+        });
     };
 
     this.setSwitchState = function(switches) {

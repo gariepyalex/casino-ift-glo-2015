@@ -10,8 +10,6 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
     this.play = function() {
         phase = 0;
         characterSprite.x = -100;
-        /*
-         */
     };
 
     this.update = function(tickEvent) {
@@ -24,8 +22,6 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
     };
 
     var updateMoveToSwitch = function(deltaS) {
-        console.log(characterSprite.x);
-        console.log(switchSprite.x);
         characterSprite.x += characterVelocity * deltaS;
         if(characterSprite.x >= switchSprite.x) {
             characterSprite.x = switchSprite.x;
