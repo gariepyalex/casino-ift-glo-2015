@@ -16,14 +16,8 @@
 <body>
 <canvas id="stageCanvas" width="800px" height="600px"></canvas>
 <div id="buttonContainer">
-    <div id="buttonList"></div>
     <button id="reset">Reset</button>
 </div>
 </body>
-<script type="text/template" id="switchTemplate">
-    <%_.each(switches, function(s){%>
-    <button id="<%= s.name %>">S</button>
-    <%});%>
-</script>
 
 </html>

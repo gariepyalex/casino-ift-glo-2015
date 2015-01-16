@@ -10,6 +10,8 @@ casino.renderer = function() {
     var currentRender;
     var currentSwitches;
 
+    var pressCallbacks = [];
+
     var initialize = function() {
         stage = new createjs.Stage("stageCanvas");
 
@@ -164,7 +166,13 @@ casino.renderer = function() {
     };
 
     var handleSwitchClick = function(event) {
-        console.log(event);
+        pressCallbacks.forEach(function(c) {
+            c(event.currentTarget.SWITCH_ID);
+        });
+    };
+
+    this.addSwitchPressListener = function(callback) {
+        pressCallbacks.push(callback);
     };
 
     initialize();
