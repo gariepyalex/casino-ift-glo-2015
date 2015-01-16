@@ -17,12 +17,11 @@ body {
 
 .switch {
     display: inline-block;
-    width: 15vw;
-    height: 15vw;
 }
 .switch img {
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 150px;
+    margin: 0 auto 0 auto;
 }
 
 #playerContainer{
@@ -50,4 +49,28 @@ body {
 
 #playerMessage{
     margin: 0;
+}
+
+.blueSwitch{
+    background: url("../img/detonator/blue_detonator_sprite.png");
+}
+
+.greenSwitch{
+    background: url("../img/detonator/green_detonator_sprite.png");
+}
+
+.purpleSwitch{
+    background: url("../img/detonator/purple_detonator_sprite.png");
+}
+
+.redSwitch{
+    background: url("../img/detonator/red_detonator_sprite.png");
+}
+
+.yellowSwitch{
+    background: url("../img/detonator/yellow_detonator_sprite.png");
+}
+
+.inactiveSwitch{
+    background: url("../img/detonator/inactive_detonator_sprite.png");
 }

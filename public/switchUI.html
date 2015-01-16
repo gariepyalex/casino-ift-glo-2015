@@ -12,7 +12,7 @@
 <body>
     <div id="playerContainer">
         <p id="currentPlayer">Player 1</p>
-        <p id="playerMessage">Choose wisely!</p>
+        <p id="playerMessage"></p>
     </div>
     <div id="switchContainer">
     </div>
@@ -20,7 +20,7 @@
 <script type="text/template" id="switchTemplate">
     <%_.each(switches, function(s){%>
     <div data-id="<%= s.name %>" class="switch">
-        <img data-id="<%= s.name %>" src="img/detonator.jpg">
+        <img class="blueSwitch" data-id="<%= s.name %>" src="img/transparent.png">
     </div>
     <%});%>
 </script>
