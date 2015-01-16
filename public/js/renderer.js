@@ -184,6 +184,7 @@ casino.renderer = function() {
     };
 
     this.setEventRenderQueue = function(eventArray) {
+        eventQueue = [];
         eventArray.forEach(function(e) {
             eventQueue.push(e);
         });
