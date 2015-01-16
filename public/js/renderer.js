@@ -26,9 +26,9 @@ casino.renderer = function() {
             {src: "../img/detonator/green_detonator_sprite.png", id: "green_detonator"},
             {src: "../img/detonator/purple_detonator_sprite.png", id: "purple_detonator"},
             {src: "../img/characters/patrick.png", id: "patrick"},
-            {src: "../img/characters/d1.png", id: "d1"},
-            {src: "../img/characters/d2.png", id: "d2"},
-            {src: "../img/characters/d3.png", id: "d3"}
+            {src: "../img/characters/d1-walk.png", id: "d1-walk"},
+            {src: "../img/characters/d3.png", id: "d3"},
+            {src: "../img/characters/d3-walk.png", id: "d3-walk"}
         ];
 
         loader = new createjs.LoadQueue(false);
@@ -77,10 +77,40 @@ casino.renderer = function() {
                 "detonation": [0, 5, "detonation"]
             }
         });
+
+        var spriteSheetChar1 = new createjs.SpriteSheet({
+            framerate: 12,
+            "images": [loader.getResult("d1-walk")],
+            "frames": {"width": 173.8, "height": 250, "regX": 50, "regY": 0},
+            "animations": {
+                "walk": [0, 7, "walk"]
+            }
+        });
+
+        /*
+        var spriteSheetChar2 = new createjs.SpriteSheet({
+            framerate: 12,
+            "images": [loader.getResult("d2-walk")],
+            "frames": {"width": 180, "height": 250, "regX": 0, "regY": 0},
+            "animations": {
+                "walk": [0, 7, "walk"]
+            }
+        });
+        */
+
+        var spriteSheetChar3 = new createjs.SpriteSheet({
+            framerate: 12,
+            "images": [loader.getResult("d3-walk")],
+            "frames": {"width": 199.7, "height": 250, "regX": 100, "regY": 0},
+            "animations": {
+                "walk": [0, 3, "walk"]
+            }
+        });
+
         characterSprites[0] = new createjs.Bitmap(loader.getResult("patrick"));
-        characterSprites[1] = new createjs.Bitmap(loader.getResult("d1"));
-        characterSprites[2] = new createjs.Bitmap(loader.getResult("d2"));
-        characterSprites[3] = new createjs.Bitmap(loader.getResult("d3"));
+        characterSprites[1] = new createjs.Sprite(spriteSheetChar1, "walk");
+        characterSprites[2] = new createjs.Bitmap(loader.getResult("d3"));
+        characterSprites[3] = new createjs.Sprite(spriteSheetChar3, "walk");
 
         var redSwitch = new createjs.Sprite(spriteSheetRed);
         var yellowSwitch = new createjs.Sprite(spriteSheetYellow);
