@@ -1,6 +1,6 @@
 var casino = casino || {};
 
-casino.switchPressAnimation = function(switchSprite, characterSprite) {
+casino.switchPressAnimation = function(switchSprite, characterSprite, explosion) {
 
     var done = false;
     var phase;
@@ -18,8 +18,11 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
         if(phase == 0) {
             updateMoveToSwitch(tickEvent.delta / 1000);
         }else if(phase == 1){
-
-        }else {
+            //Nothing to do. It updates automatically.
+        } else if(phase == 2) {
+            updateMoveOutOfStage(tickEvent.delta / 1000);
+        } else {
+            characterSprite.visible = false;
             done = true;
         }
     };
@@ -34,12 +37,25 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
         }
     };
 
+    var updateMoveOutOfStage = function(deltaS) {
+        characterSprite.x += characterVelocity * deltaS;
+        if(characterSprite.x >= 875) {
+            phase++;
+            characterSprite.gotoAndStop(0);
+        }
+    };
+
     var playSwitchAnimation = function() {
         switchSprite.gotoAndPlay(0);
         switchSprite.on("animationend", function() {
             switchSprite.gotoAndStop(5);
-            characterSprite.visible = false;
-            phase++;
+            if(explosion) {
+                phase += 2;
+                characterSprite.gotoAndStop(0);
+            } else {
+                characterSprite.play();
+                phase++;
+            }
         });
     };
 

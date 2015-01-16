@@ -184,8 +184,14 @@ casino.renderer = function() {
             currentRender = new casino.newSwitchesAnimation(switchSprites);
             currentRender.play();
         } else if(event.NAME === "PRESS"){
+            var explosion = false;
+            if(eventQueue[0] && eventQueue[0].NAME == "EXPLOSION") {
+                explosion = true;
+                eventQueue.shift();
+            }
             currentCharacter = parseInt(event.PLAYER_ID) - 1;
-            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID), characterSprites[currentCharacter]);
+            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID),
+                characterSprites[currentCharacter], explosion);
             currentRender.play();
         }
     };
