@@ -12,7 +12,8 @@ $( document ).ready(function() {
         console.log(state);
         if(state["SWITCHES"]){
             renderer.setSwitchState(state["SWITCHES"]);
-        } if(state["EVENTS"]) {
+        }
+        if(state["EVENTS"]) {
             renderer.setEventRenderQueue(state["EVENTS"]);
         }
     });

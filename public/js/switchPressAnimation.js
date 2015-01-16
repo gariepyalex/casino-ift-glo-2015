@@ -10,12 +10,14 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
     this.play = function() {
         phase = 0;
         characterSprite.x = -100;
+        characterSprite.visible = true;
     };
 
     this.update = function(tickEvent) {
         if(phase == 0) {
             updateMoveToSwitch(tickEvent.delta / 1000);
         }else if(phase == 1){
+
         }else {
             done = true;
         }
@@ -34,6 +36,7 @@ casino.switchPressAnimation = function(switchSprite, characterSprite) {
         switchSprite.gotoAndPlay(0);
         switchSprite.on("animationend", function() {
             switchSprite.gotoAndStop(5);
+            characterSprite.visible = false;
             phase++;
         });
     };

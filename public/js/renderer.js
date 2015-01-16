@@ -4,12 +4,13 @@ casino.renderer = function() {
 
     var stage, loader;
     var switchSprites = [];
-    var character;
+    var characterSprites = [];
     var switchReady = false;
 
     var eventQueue = [];
     var currentRender;
     var currentSwitches;
+    var currentCharacter = 0;
 
     var pressCallbacks = [];
 
@@ -22,7 +23,10 @@ casino.renderer = function() {
             {src: "../img/detonator/blue_detonator_sprite.png", id: "blue_detonator"},
             {src: "../img/detonator/green_detonator_sprite.png", id: "green_detonator"},
             {src: "../img/detonator/purple_detonator_sprite.png", id: "purple_detonator"},
-            {src: "../img/patrick.png", id: "patrick"}
+            {src: "../img/characters/patrick.png", id: "patrick"},
+            {src: "../img/characters/d1.png", id: "d1"},
+            {src: "../img/characters/d2.png", id: "d2"},
+            {src: "../img/characters/d3.png", id: "d3"}
         ];
 
         loader = new createjs.LoadQueue(false);
@@ -71,7 +75,10 @@ casino.renderer = function() {
                 "detonation": [0, 5, "detonation"]
             }
         });
-        character = new createjs.Bitmap(loader.getResult("patrick"));
+        characterSprites[0] = new createjs.Bitmap(loader.getResult("patrick"));
+        characterSprites[1] = new createjs.Bitmap(loader.getResult("d1"));
+        characterSprites[2] = new createjs.Bitmap(loader.getResult("d2"));
+        characterSprites[3] = new createjs.Bitmap(loader.getResult("d3"));
 
         var redSwitch = new createjs.Sprite(spriteSheetRed);
         var yellowSwitch = new createjs.Sprite(spriteSheetYellow);
@@ -84,9 +91,19 @@ casino.renderer = function() {
         blueSwitch.x = 390; blueSwitch.y = 450;
         greenSwitch.x = 520; greenSwitch.y = 450;
         purpleSwitch.x = 650; purpleSwitch.y = 450;
-        character.x = -150; character.y = 350;
 
-        stage.addChild(character, redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
+        characterSprites[0].x = -150; characterSprites[0].y = 350;
+        characterSprites[1].x = -150; characterSprites[1].y = 350;
+        characterSprites[2].x = -150; characterSprites[2].y = 350;
+        characterSprites[3].x = -150; characterSprites[3].y = 350;
+
+        characterSprites[0].visible = false;
+        characterSprites[1].visible = false;
+        characterSprites[2].visible = false;
+        characterSprites[3].visible = false;
+
+        stage.addChild(characterSprites[0], characterSprites[1], characterSprites[2], characterSprites[3],
+            redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
 
         switchSprites.push(redSwitch);
         switchSprites.push(yellowSwitch);
@@ -128,7 +145,8 @@ casino.renderer = function() {
             currentRender = new casino.newSwitchesAnimation(switchSprites);
             currentRender.play();
         } else if(event.NAME === "PRESS"){
-            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID), character);
+            currentCharacter = parseInt(event.PLAYER_ID) - 1;
+            currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID), characterSprites[currentCharacter]);
             currentRender.play();
         }
     };
