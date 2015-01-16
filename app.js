@@ -13,6 +13,7 @@ game.setPlayerQueue(new PlayerQueue([
             {ID: "3", NAME: "BAR"},
             {ID: "4", NAME: "REDDIT"},
         ]));
+game.newGame();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/css",  express.static(__dirname + '/public/css'));
