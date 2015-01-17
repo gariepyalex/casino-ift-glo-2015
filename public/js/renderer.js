@@ -5,6 +5,7 @@ casino.renderer = function() {
     var stage, loader;
     var switchSprites = [];
     var characterSprites = [];
+    var computer;
     var boomImage;
 
     var switchReady = false;
@@ -31,7 +32,7 @@ casino.renderer = function() {
             {src: "../img/characters/d2-walk.png", id: "d2-walk"},
             {src: "../img/characters/d3-walk.png", id: "d3-walk"},
             {src: "../img/characters/d4-walk.png", id: "d4-walk"},
-            {src: "../img/computer.png", id: "computer"},
+            {src: "../img/computerSprite.png", id: "computer"},
             {src: "../img/boom.png", id: "boom"}
         ];
 
@@ -41,7 +42,16 @@ casino.renderer = function() {
     };
 
     var handleComplete = function() {
-        var computer = new createjs.Bitmap(loader.getResult("computer"));
+        var spriteSheetComputer = new createjs.SpriteSheet({
+            framerate: 8,
+            "images": [loader.getResult("computer")],
+            "frames": {"width": 384, "height": 332, "regX": 0, "regY": 0},
+            "animations": {
+                "wait": [0, 3, "wait"],
+                "compute": [4, 7, "compute"]
+            }
+        });
+        computer = new createjs.Sprite(spriteSheetComputer, "wait");
         computer.x = 200;
         computer.y = 50;
 
@@ -49,7 +59,7 @@ casino.renderer = function() {
         boomImage.scaleX = 0.6;
         boomImage.scaleY = 0.6;
         boomImage.x = 240;
-        boomImage.y = 140;
+        boomImage.y = 100;
         boomImage.visible = false;
 
         var spriteSheetRed = new createjs.SpriteSheet({
@@ -114,7 +124,7 @@ casino.renderer = function() {
         var spriteSheetChar3 = new createjs.SpriteSheet({
             framerate: 12,
             "images": [loader.getResult("d3-walk")],
-            "frames": {"width": 199.7, "height": 250, "regX": 100, "regY": 0},
+            "frames": {"width": 199.7, "height": 250, "regX": 50, "regY": 0},
             "animations": {
                 "walk": [0, 3, "walk"]
             }
@@ -123,7 +133,7 @@ casino.renderer = function() {
         var spriteSheetChar4 = new createjs.SpriteSheet({
             framerate: 12,
             "images": [loader.getResult("d4-walk")],
-            "frames": {"width": 199.7, "height": 250, "regX": 100, "regY": 0},
+            "frames": {"width": 199.7, "height": 250, "regX": 50, "regY": 0},
             "animations": {
                 "walk": [0, 3, "walk"]
             }
@@ -206,7 +216,7 @@ casino.renderer = function() {
             }
             currentCharacter = parseInt(event.PLAYER_ID) - 1;
             currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID),
-                characterSprites[currentCharacter], boomImage, explosion);
+                characterSprites[currentCharacter], computer, boomImage, explosion);
             currentRender.play();
         }
     };
