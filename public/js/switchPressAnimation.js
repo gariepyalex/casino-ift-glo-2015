@@ -1,25 +1,44 @@
 var casino = casino || {};
 
-casino.switchPressAnimation = function(switchSprite, characterSprite, explosion) {
+casino.switchPressAnimation = function(switchSprite, characterSprite, computerSprite, boomImage, explosion) {
 
     var done = false;
     var phase;
 
-    characterVelocity = 200; //pixel per sec.
+    var characterVelocity = 200; //pixel per sec.
+
+    var SUSPENSE_DISPLAY_TIME_SEC = Math.random()* 2 + 0.5;
+    var elapsedSuspenseDisplayTime = 0;
+
+    var BOOM_DISPLAY_TIME_SEC = 0.9;
+    var elapsedBoomDisplayTime = 0;
+
+    var phases = {
+        walkToSwitch: "WALK TO SWICH",
+        pressSwitch: "PRESS SWITCH",
+        suspense: "SUSPENSE",
+        explosion: "EXPLOSION",
+        walkAway: "WALK AWAY",
+        done: "DONE"
+    };
 
     this.play = function() {
-        phase = 0;
+        phase = phases.walkToSwitch;
         characterSprite.x = -100;
         characterSprite.visible = true;
         characterSprite.play();
     };
 
     this.update = function(tickEvent) {
-        if(phase == 0) {
+        if(phase == phases.walkToSwitch) {
             updateMoveToSwitch(tickEvent.delta / 1000);
-        }else if(phase == 1){
+        } else if(phase == phases.pressSwitch) {
             //Nothing to do. It updates automatically.
-        } else if(phase == 2) {
+        } else if(phase == phases.suspense) {
+            updateSuspense(tickEvent.delta / 1000);
+        } else if(phase == phases.explosion) {
+            updateExplosionDisplay(tickEvent.delta / 1000);
+        } else if(phase == phases.walkAway) {
             updateMoveOutOfStage(tickEvent.delta / 1000);
         } else {
             characterSprite.visible = false;
@@ -31,7 +50,7 @@ casino.switchPressAnimation = function(switchSprite, characterSprite, explosion)
         characterSprite.x += characterVelocity * deltaS;
         if(characterSprite.x >= switchSprite.x) {
             characterSprite.x = switchSprite.x;
-            phase++;
+            phase = phases.pressSwitch;
             characterSprite.gotoAndStop(0);
             playSwitchAnimation();
         }
@@ -40,22 +59,40 @@ casino.switchPressAnimation = function(switchSprite, characterSprite, explosion)
     var updateMoveOutOfStage = function(deltaS) {
         characterSprite.x += characterVelocity * deltaS;
         if(characterSprite.x >= 875) {
-            phase++;
+            phase = phases.done;
             characterSprite.gotoAndStop(0);
+        }
+    };
+
+    var updateSuspense = function(deltaS){
+        elapsedSuspenseDisplayTime += deltaS;
+        if(elapsedSuspenseDisplayTime >= SUSPENSE_DISPLAY_TIME_SEC) {
+            computerSprite.gotoAndPlay("wait");
+            if(explosion) {
+                phase = phases.explosion;
+                boomImage.visible = true;
+                characterSprite.gotoAndStop(0);
+            } else {
+                characterSprite.play();
+                phase = phases.walkAway;
+            }
+        }
+    };
+
+    var updateExplosionDisplay = function(deltaS) {
+        elapsedBoomDisplayTime += deltaS;
+        if(elapsedBoomDisplayTime >= BOOM_DISPLAY_TIME_SEC) {
+            phase = phases.done;
+            boomImage.visible = false;
         }
     };
 
     var playSwitchAnimation = function() {
         switchSprite.gotoAndPlay(0);
         switchSprite.on("animationend", function() {
+            phase = phases.suspense;
+            computerSprite.gotoAndPlay("compute");
             switchSprite.gotoAndStop(5);
-            if(explosion) {
-                phase += 2;
-                characterSprite.gotoAndStop(0);
-            } else {
-                characterSprite.play();
-                phase++;
-            }
         });
     };
 
