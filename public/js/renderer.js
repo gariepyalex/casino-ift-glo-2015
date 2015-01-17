@@ -5,6 +5,8 @@ casino.renderer = function() {
     var stage, loader;
     var switchSprites = [];
     var characterSprites = [];
+    var boomImage;
+
     var switchReady = false;
 
     var eventQueue = [];
@@ -28,7 +30,9 @@ casino.renderer = function() {
             {src: "../img/characters/d1-walk.png", id: "d1-walk"},
             {src: "../img/characters/d2-walk.png", id: "d2-walk"},
             {src: "../img/characters/d3-walk.png", id: "d3-walk"},
-            {src: "../img/characters/d4-walk.png", id: "d4-walk"}
+            {src: "../img/characters/d4-walk.png", id: "d4-walk"},
+            {src: "../img/computer.png", id: "computer"},
+            {src: "../img/boom.png", id: "boom"}
         ];
 
         loader = new createjs.LoadQueue(false);
@@ -37,6 +41,17 @@ casino.renderer = function() {
     };
 
     var handleComplete = function() {
+        var computer = new createjs.Bitmap(loader.getResult("computer"));
+        computer.x = 200;
+        computer.y = 50;
+
+        boomImage = new createjs.Bitmap(loader.getResult("boom"));
+        boomImage.scaleX = 0.6;
+        boomImage.scaleY = 0.6;
+        boomImage.x = 240;
+        boomImage.y = 140;
+        boomImage.visible = false;
+
         var spriteSheetRed = new createjs.SpriteSheet({
             framerate: 12,
             "images": [loader.getResult("red_detonator")],
@@ -141,7 +156,7 @@ casino.renderer = function() {
         characterSprites[2].visible = false;
         characterSprites[3].visible = false;
 
-        stage.addChild(characterSprites[0], characterSprites[1], characterSprites[2], characterSprites[3],
+        stage.addChild(computer, boomImage, characterSprites[0], characterSprites[1], characterSprites[2], characterSprites[3],
             redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
 
         switchSprites.push(redSwitch);
@@ -191,7 +206,7 @@ casino.renderer = function() {
             }
             currentCharacter = parseInt(event.PLAYER_ID) - 1;
             currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID),
-                characterSprites[currentCharacter], explosion);
+                characterSprites[currentCharacter], boomImage, explosion);
             currentRender.play();
         }
     };
