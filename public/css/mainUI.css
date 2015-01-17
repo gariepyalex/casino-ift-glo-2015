@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Arcade classic";
+    src: url("../fonts/ARCADECLASSIC.TTF");
+}
+
 html, body {
     margin: 0;
 }
@@ -17,11 +22,49 @@ html, body {
 }
 
 #stageCanvas {
+    display: inline-block;
     width: 60vw;
     height: calc(60vw * 0.75);
-    display: block;
     margin: 0 auto;
     border-style: solid;
     border-width: thin;
     border-color: black;
+}
+
+#playerContainer{
+    margin: 0 10px 0 0;
+    display: inline-block;
+}
+
+.player{
+    list-style-type: none;
+}
+
+.playerName{
+    font-family: "Arcade classic", serif;
+    text-align: center;
+}
+
+.D1{
+    width: 175px;
+    height: 250px;
+    background: url("../img/characters/d1-walk.png");
+}
+
+.D2{
+    width: 175px;
+    height: 250px;
+    background: url("../img/characters/d2-walk.png");
+}
+
+.D3{
+    width: 200px;
+    height: 195px;
+    background: url("../img/characters/d3-walk.png") 0 -40px;
+}
+
+.D4{
+    width: 200px;
+    height: 195px;
+    background: url("../img/characters/d4-walk.png") 0 -40px;
 }
