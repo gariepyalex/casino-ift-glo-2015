@@ -179,6 +179,30 @@ casino.renderer = function() {
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener("tick", tick);
+        if(currentSwitches) {
+            renderSwitches(currentSwitches);
+        }
+    };
+
+    this.setStateToRender = function(state) {
+        if(state.SWITCHES) {
+            setSwitchState(state.SWITCHES);
+        }
+        if(state.EVENTS) {
+            setEventRenderQueue(state.EVENTS);
+        }
+    };
+
+    var setEventRenderQueue = function(eventArray) {
+        eventQueue = [];
+        eventArray.forEach(function(e) {
+            eventQueue.push(e);
+        });
+        animationInProgress = true;
+    };
+
+    var setSwitchState = function(switches) {
+        currentSwitches = switches;
     };
 
     var tick = function(event) {
@@ -190,8 +214,6 @@ casino.renderer = function() {
             } else {
                 updateAnimation(event);
             }
-        } else {
-            self.renderSwitches(currentSwitches);
         }
         if(animationInProgress && !currentRender) {
             fireAnimationFinished();
@@ -218,7 +240,7 @@ casino.renderer = function() {
     var addEventToRender = function() {
         var event = eventQueue.shift();
         if(event.NAME === "NEW_SWITCHES") {
-            self.renderSwitches(event.SWITCHES);
+            renderSwitches(currentSwitches);
             currentRender = new casino.newSwitchesAnimation(switchSprites);
             currentRender.play();
         } else if(event.NAME === "PRESS"){
@@ -234,19 +256,7 @@ casino.renderer = function() {
         }
     };
 
-    this.setEventRenderQueue = function(eventArray) {
-        eventQueue = [];
-        eventArray.forEach(function(e) {
-            eventQueue.push(e);
-        });
-        animationInProgress = true;
-    };
-
-    this.setSwitchState = function(switches) {
-        currentSwitches = switches;
-    };
-
-    this.renderSwitches = function(switchArray) {
+    var renderSwitches = function(switchArray) {
         switchSprites.forEach(function(sprite, index) {
             sprite.visible = false;
 

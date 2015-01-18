@@ -13,12 +13,8 @@ $( document ).ready(function() {
     socket.on("game current state", function(state) {
         socket.emit("game ui block");
         lastState = state;
-        if(state["SWITCHES"]){
-            renderer.setSwitchState(state["SWITCHES"]);
-        }
-        if(state["EVENTS"]) {
-            renderer.setEventRenderQueue(state["EVENTS"]);
-        } else {
+        renderer.setStateToRender(state);
+        if(!state["EVENTS"]) {
             socket.emit("game ui unblock");
         }
     });
@@ -67,4 +63,5 @@ $( document ).ready(function() {
 
     bindClicks();
     renderer.addAnimationFinishedListener(renderFinished);
+    socket.emit("game ui unblock");
 });
