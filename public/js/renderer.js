@@ -9,6 +9,7 @@ casino.renderer = function() {
     var boomImage;
 
     var switchReady = false;
+    var animationInProgress = false;
 
     var eventQueue = [];
     var currentRender;
@@ -16,6 +17,7 @@ casino.renderer = function() {
     var currentCharacter = 0;
 
     var pressCallbacks = [];
+    var animationFinishedCallbacks = [];
 
     var switchMinX = 130, switchMaxX = 650;
 
@@ -191,7 +193,18 @@ casino.renderer = function() {
         } else {
             self.renderSwitches(currentSwitches);
         }
+        if(animationInProgress && !currentRender) {
+            fireAnimationFinished();
+            animationInProgress = false;
+        }
+
         stage.update(event);
+    };
+
+    var fireAnimationFinished = function() {
+        animationFinishedCallbacks.forEach(function(c) {
+            c();
+        })
     };
 
     var updateAnimation = function (event) {
@@ -226,12 +239,11 @@ casino.renderer = function() {
         eventArray.forEach(function(e) {
             eventQueue.push(e);
         });
+        animationInProgress = true;
     };
 
     this.setSwitchState = function(switches) {
-        if(!switchReady) {
-            currentSwitches = switches;
-        }
+        currentSwitches = switches;
     };
 
     this.renderSwitches = function(switchArray) {
@@ -265,13 +277,24 @@ casino.renderer = function() {
     };
 
     var handleSwitchClick = function(event) {
-        pressCallbacks.forEach(function(c) {
-            c(event.currentTarget.SWITCH_ID);
-        });
+        if(!animationInProgress) {
+            var pressedId = event.currentTarget.SWITCH_ID;
+            currentSwitches.forEach(function(s) {
+                if(s.name == pressedId && !s.activated) {
+                    pressCallbacks.forEach(function(c) {
+                        c(event.currentTarget.SWITCH_ID);
+                    });
+                }
+            });
+        }
     };
 
     this.addSwitchPressListener = function(callback) {
         pressCallbacks.push(callback);
+    };
+
+    this.addAnimationFinishedListener = function(callback) {
+        animationFinishedCallbacks.push(callback);
     };
 
     initialize();

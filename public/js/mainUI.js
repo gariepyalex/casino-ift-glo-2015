@@ -3,14 +3,14 @@ var casino = casino || {};
 $( document ).ready(function() {
     var socket = io.connect();
     var renderer = new casino.renderer();
+    var lastState;
 
     renderer.addSwitchPressListener(function(switchId) {
         socket.emit("game press switch", switchId);
     });
 
     socket.on("game current state", function(state) {
-        console.log(state);
-        updatePlayerList(state);
+        lastState = state;
         if(state["SWITCHES"]){
             renderer.setSwitchState(state["SWITCHES"]);
         }
@@ -18,6 +18,10 @@ $( document ).ready(function() {
             renderer.setEventRenderQueue(state["EVENTS"]);
         }
     });
+
+    var renderFinished = function() {
+        updatePlayerList(lastState);
+    };
 
     var bindClicks = function() {
         var reset =  $("#reset");
@@ -57,4 +61,5 @@ $( document ).ready(function() {
     };
 
     bindClicks();
+    renderer.addAnimationFinishedListener(renderFinished);
 });
