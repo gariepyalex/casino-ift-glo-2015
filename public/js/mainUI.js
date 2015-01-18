@@ -47,7 +47,7 @@ $( document ).ready(function() {
     };
 
     var clearPlayerList = function(){
-        for (var i = 1; i <= 3; i++){
+        for (var i = 1; i <= 4; i++){
             var playerPosition = $("#playerPosition" + i);
             var playerName = playerPosition.children(".playerName");
             var playerImage = playerPosition.children("img");

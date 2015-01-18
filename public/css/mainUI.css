@@ -6,11 +6,18 @@
 html, body {
     margin: 0;
 }
+
+body {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
 #buttonContainer{
     width: 200px;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 #buttonList {
@@ -25,15 +32,16 @@ html, body {
     display: inline-block;
     width: 60vw;
     height: calc(60vw * 0.75);
-    margin: 0 auto;
     border-style: solid;
     border-width: thin;
     border-color: black;
+    margin-top: 75px;
 }
 
 #playerContainer{
     margin: 0 10px 0 0;
     display: inline-block;
+    height: 730px;
 }
 
 .player{
@@ -42,7 +50,9 @@ html, body {
 
 .playerName{
     font-family: "Arcade classic", serif;
+    font-size: 20px;
     text-align: center;
+    margin: 10px 0;
 }
 
 .D1{
