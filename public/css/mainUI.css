@@ -46,25 +46,37 @@ html, body {
 }
 
 .D1{
-    width: 175px;
-    height: 250px;
-    background: url("../img/characters/d1-walk.png");
+    width: 80px;
+    height: 125px;
+    background: url("../img/characters/d1.png") no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .D2{
-    width: 175px;
-    height: 250px;
-    background: url("../img/characters/d2-walk.png");
+    width: 84px;
+    height: 125px;
+    background: url("../img/characters/d2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .D3{
-    width: 200px;
-    height: 195px;
-    background: url("../img/characters/d3-walk.png") 0 -40px;
+    width: 97px;
+    height: 125px;
+    background: url("../img/characters/d3.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .D4{
-    width: 200px;
-    height: 195px;
-    background: url("../img/characters/d4-walk.png") 0 -40px;
+    width: 97px;
+    height: 125px;
+    background: url("../img/characters/d4.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
