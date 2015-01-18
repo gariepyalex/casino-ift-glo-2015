@@ -2,14 +2,26 @@ $( document ).ready(function() {
     var socket = io.connect();
     var template = _.template($("#switchTemplate").html());
 
+    var lastState;
+    var blocked = false;
+
     socket.on("game current state", function (state) {
-        render(state["SWITCHES"]);
-        updateCurrentPlayer(state);
-        updateSwitches(state);
-        if (gameIsOver(state)){
+        lastState = state;
+    });
+
+    socket.on("game ui block", function() {
+        blocked = true;
+    });
+
+    socket.on("game ui unblock", function() {
+        render(lastState["SWITCHES"]);
+        updateCurrentPlayer(lastState);
+        updateSwitches(lastState);
+        if (gameIsOver(lastState)){
             $("#playerMessage").text("You've won!")
         }
         bindClicks();
+        blocked = false;
     });
 
     var render = function (switches) {
@@ -26,7 +38,9 @@ $( document ).ready(function() {
         var any_switch = $("#switchContainer").children(".switch");
         any_switch.unbind("click");
         any_switch.click(function (event) {
-            socket.emit("game press switch", event.target.getAttribute("data-id"));
+            if(!blocked){
+                socket.emit("game press switch", event.target.getAttribute("data-id"));
+            }
         });
     };
 

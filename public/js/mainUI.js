@@ -6,21 +6,26 @@ $( document ).ready(function() {
     var lastState;
 
     renderer.addSwitchPressListener(function(switchId) {
+        socket.emit("game ui block");
         socket.emit("game press switch", switchId);
     });
 
     socket.on("game current state", function(state) {
+        socket.emit("game ui block");
         lastState = state;
         if(state["SWITCHES"]){
             renderer.setSwitchState(state["SWITCHES"]);
         }
         if(state["EVENTS"]) {
             renderer.setEventRenderQueue(state["EVENTS"]);
+        } else {
+            socket.emit("game ui unblock");
         }
     });
 
     var renderFinished = function() {
         updatePlayerList(lastState);
+        socket.emit("game ui unblock");
     };
 
     var bindClicks = function() {

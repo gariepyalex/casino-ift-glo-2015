@@ -57,6 +57,14 @@ io.on("connection", function(socket) {
             console.error("INVALID PLAYER ARRAY FORMAT");
         }
     });
+
+    socket.on("game ui block", function() {
+        io.emit("game ui block");
+    });
+
+    socket.on("game ui unblock", function() {
+        io.emit("game ui unblock");
+    });
 });
 
 var isValidPlayerArray = function(playerArray) {
