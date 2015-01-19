@@ -17,8 +17,10 @@ $( document ).ready(function() {
         render(lastState["SWITCHES"]);
         updateCurrentPlayer(lastState);
         updateSwitches(lastState);
+        var playerMessage = $("#playerMessage");
+        playerMessage.text("");
         if (gameIsOver(lastState)){
-            $("#playerMessage").text("You've won!")
+            playerMessage.text("You've won!")
         }
         bindClicks();
         blocked = false;
