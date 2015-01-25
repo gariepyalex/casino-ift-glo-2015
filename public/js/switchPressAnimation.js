@@ -7,7 +7,7 @@ casino.switchPressAnimation = function(switchSprite, characterSprite, computerSp
 
     var characterVelocity = 200; //pixel per sec.
 
-    var SUSPENSE_DISPLAY_TIME_SEC = Math.random()* 2 + 0.5;
+    var SUSPENSE_DISPLAY_TIME_SEC = Math.random()* 3 + 0.5;
     var elapsedSuspenseDisplayTime = 0;
 
     var BOOM_DISPLAY_TIME_SEC = 0.9;
