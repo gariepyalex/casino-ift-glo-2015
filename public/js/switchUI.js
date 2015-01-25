@@ -39,7 +39,13 @@ $( document ).ready(function() {
         any_switch.unbind("click");
         any_switch.click(function (event) {
             if(!blocked){
-                socket.emit("game press switch", event.target.getAttribute("data-id"));
+                if(lastState) {
+                    lastState.SWITCHES.forEach(function(s) {
+                        if(s.name == event.target.getAttribute("data-id") && !s.activated) {
+                            socket.emit("game press switch", event.target.getAttribute("data-id"));
+                        }
+                    });
+                }
             }
         });
     };
@@ -56,8 +62,7 @@ $( document ).ready(function() {
 
     var updateSwitches = function(state){
         var switches = state.SWITCHES;
-        var i = 0;
-        _.each(switches, function (s) {
+        _.each(switches, function (s, i) {
             var current_switch_img = $(".switch[data-id=" + s.name + "]").children("img");
             current_switch_img.removeClass();
 
@@ -84,8 +89,6 @@ $( document ).ready(function() {
             if (s.activated){
                 current_switch_img.addClass("inactiveSwitch")
             }
-
-            i = i + 1
         });
     };
 
