@@ -3,21 +3,38 @@
     src: url("../fonts/ARCADECLASSIC.TTF");
 }
 
+@font-face {
+    font-family: "Monofett";
+    src: url("../fonts/Monofett.ttf");
+}
+
 html, body {
     margin: 0;
 }
 
-body {
+#gameTitle {
+    font-family: "Monofett", cursive;
+    font-weight: 500;
+    font-size: 80px;
+    text-align: center;
+    margin: 0;
+}
+
+#gameContainer {
+    width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
+    margin: 0;
 }
 
 #buttonContainer{
     width: 200px;
+    height: calc(60vw * 0.75);
     display: block;
+    margin: 75px 0 0 25px;
 }
 
 #buttonList {
@@ -26,6 +43,12 @@ body {
 
 #buttonList button {
     margin: 5px;
+}
+
+#reset {
+    font-family: "Arcade classic";
+    font-size: 30px;
+    margin-top: calc(60vw * 0.75 - 50px);
 }
 
 #stageCanvas {

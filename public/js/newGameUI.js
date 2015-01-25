@@ -3,10 +3,10 @@ $(document).ready(function() {
     var socket = io.connect();
 
     $(".newGameButton").click(function(){
-        var player1 = $("#player1").children("input").val();
-        var player2 = $("#player2").children("input").val();
-        var player3 = $("#player3").children("input").val();
-        var player4 = $("#player4").children("input").val();
+        var player1 = $("#player1 div input").val();
+        var player2 = $("#player2 div input").val();
+        var player3 = $("#player3 div input").val();
+        var player4 = $("#player4 div input").val();
 
         socket.emit("game set players", [
             {"ID": 1, "NAME": player1},

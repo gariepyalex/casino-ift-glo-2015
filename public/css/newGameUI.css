@@ -1,20 +1,40 @@
+@font-face {
+    font-family: "Arcade classic";
+    src: url("../fonts/ARCADECLASSIC.TTF");
+}
+
+@font-face {
+    font-family: "Monofett";
+    src: url("../fonts/Monofett.ttf");
+}
+
+h1, h2 {
+    text-align: center;
+}
+
 .newGameContainer{
     width: 80%;
     margin: 0 auto 0 auto;
 }
 
+#gameTitle {
+    font-family: "Monofett", cursive;
+    font-weight: 500;
+    font-size: 80px;
+}
+
 #newGameTitle{
-    width: 50%;
-    margin: 0 auto 0 auto;
-    text-align: center;
+    font-family: "Arcade classic";
+    font-size: 50px;
 }
 
 #playerNames{
     margin: 20px 0 20px 0;
+
 }
 
 #playerNames ul{
-    width: 50%;
+    width: 80%;
     margin: 0 auto 0 auto;
     padding: 0;
 }
@@ -25,21 +45,50 @@
     padding: 10px;
 }
 
+.playerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.playerContainer img {
+    width: 25%;
+    height: 25%;
+    border: 4px solid black;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+input[type="text"] {
+    font-family: "Arcade classic";
+    font-size: 30px;
+}
+
 #playerNames ul li input{
-    width: 100%;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #848484;
     outline: 0;
     text-align: center;
+    width: 70%;
+    height: 50px;
 }
 
 .newGameButtonContainer{
-    width: 100px;
-    margin: 0 auto 0 auto;
+    width: 100%;
+    text-align: center;
 }
 
 .newGameButton{
-    width: 100%;
+    font-family: "Arcade classic";
+    font-size: 40px;
+    font-weight: 300;
+    background-color: greenyellow;
+    border: 4px solid black;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }

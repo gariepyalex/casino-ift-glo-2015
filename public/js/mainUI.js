@@ -29,6 +29,7 @@ $( document ).ready(function() {
        reset.unbind("click");
         reset.click(function(){
             socket.emit("game reset");
+            document.location.href = "/"
         });
     };
 
