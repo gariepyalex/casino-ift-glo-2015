@@ -12,6 +12,11 @@ html, body {
     margin: 0;
 }
 
+body {
+    background: url("../img/background.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
 #gameTitle {
     font-family: "Monofett", cursive;
     font-weight: 500;
@@ -34,7 +39,7 @@ html, body {
     width: 200px;
     height: calc(60vw * 0.75);
     display: block;
-    margin: 75px 0 0 25px;
+    margin: 75px 0 0;
 }
 
 #buttonList {
@@ -55,14 +60,16 @@ html, body {
     display: inline-block;
     width: 60vw;
     height: calc(60vw * 0.75);
-    border-style: solid;
-    border-width: thin;
-    border-color: black;
-    margin-top: 75px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 4px solid #848484;
+    margin-top: 40px;
+    background-color: #9AB1D3;
 }
 
 #playerContainer{
-    margin: 0 10px 0 0;
+    margin: 0;
     display: inline-block;
     height: 730px;
 }
