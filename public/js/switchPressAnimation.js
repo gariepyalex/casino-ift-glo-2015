@@ -98,5 +98,5 @@ casino.switchPressAnimation = function(switchSprite, characterSprite, computerSp
 
     this.isDone = function() {
         return done;
-    }
+    };
 };

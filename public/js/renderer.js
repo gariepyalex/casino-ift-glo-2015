@@ -7,13 +7,16 @@ casino.renderer = function() {
     var characterSprites = [];
     var computer;
     var boomImage;
+    var winText;
 
     var switchReady = false;
     var animationInProgress = false;
+    var gameFinished = false;
 
     var eventQueue = [];
     var currentRender;
     var currentSwitches;
+    var currentQueue;
     var currentCharacter = 0;
 
     var pressCallbacks = [];
@@ -168,14 +171,20 @@ casino.renderer = function() {
         characterSprites[2].visible = false;
         characterSprites[3].visible = false;
 
+        winText = new createjs.Text("temp", "60px Arcade classic", "#000000");
+        winText.x = 100;
+        winText.y = 30;
+        winText.visible = false;
+
         stage.addChild(computer, boomImage, characterSprites[0], characterSprites[1], characterSprites[2], characterSprites[3],
-            redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch);
+            redSwitch, yellowSwitch, blueSwitch, greenSwitch, purpleSwitch, winText);
 
         switchSprites.push(redSwitch);
         switchSprites.push(yellowSwitch);
         switchSprites.push(blueSwitch);
         switchSprites.push(greenSwitch);
         switchSprites.push(purpleSwitch);
+
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener("tick", tick);
@@ -191,6 +200,9 @@ casino.renderer = function() {
         if(state.EVENTS) {
             setEventRenderQueue(state.EVENTS);
         }
+        if(state.PLAYER_QUEUE) {
+            setPlayerQueue(state.PLAYER_QUEUE);
+        }
     };
 
     var setEventRenderQueue = function(eventArray) {
@@ -205,19 +217,25 @@ casino.renderer = function() {
         currentSwitches = switches;
     };
 
+    var setPlayerQueue = function(queue) {
+        currentQueue = queue;
+    };
+
     var tick = function(event) {
-        if(switchReady) {
-            if(!currentRender){
-                if(eventQueue.length != 0) {
-                    addEventToRender();
+        if(!gameFinished) {
+            if(switchReady) {
+                if(!currentRender){
+                    if(eventQueue.length != 0) {
+                        addEventToRender();
+                    }
+                } else {
+                    updateAnimation(event);
                 }
-            } else {
-                updateAnimation(event);
             }
-        }
-        if(animationInProgress && !currentRender) {
-            fireAnimationFinished();
-            animationInProgress = false;
+            if(animationInProgress && !currentRender) {
+                fireAnimationFinished();
+                animationInProgress = false;
+            }
         }
 
         stage.update(event);
@@ -253,6 +271,9 @@ casino.renderer = function() {
             currentRender = new casino.switchPressAnimation(findSwitchSprite(event.SWITCH_ID),
                 characterSprites[currentCharacter], computer, boomImage, explosion);
             currentRender.play();
+        } else if(event.NAME == "WIN") {
+            gameFinished = true;
+            displayWinner(currentQueue[currentQueue.length - 1].ID, currentQueue[currentQueue.length - 1].NAME)
         }
     };
 
@@ -305,6 +326,21 @@ casino.renderer = function() {
 
     this.addAnimationFinishedListener = function(callback) {
         animationFinishedCallbacks.push(callback);
+    };
+
+    var displayWinner = function(id, name) {
+        var sprite =  characterSprites[id - 1];
+        sprite.x = 340;
+        sprite.y = 50;
+        sprite.gotoAndPlay(0);
+        sprite.visible = true;
+
+        winText.text = name + " wins!";
+        var bounds = winText.getBounds();
+        winText.x = bounds.width / 2;
+        winText.visible = true;
+
+        computer.visible = false;
     };
 
     initialize();
